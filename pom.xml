@@ -1,210 +1,210 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.ta4j</groupId>
-	<artifactId>ta4j-parent</artifactId>
-	<version>0.16-SNAPSHOT</version>
-	<packaging>pom</packaging>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>ta4j-parent</artifactId>
+  <build>
+    <plugins>
 
-	<name>Ta4j Parent</name>
-	<description>ta4j is a Java library providing a simple API for technical analysis.</description>
-	<url>http://github.com/ta4j/ta4j</url>
-	<inceptionYear>2014</inceptionYear>
+      <!-- Build source and target -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <showDeprecation>true</showDeprecation>
+          <showWarnings>true</showWarnings>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.7.0</version>
+      </plugin>
+      <!-- Package sources -->
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+            <id>attach-sources</id>
+          </execution>
+        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>2.2.1</version>
+      </plugin>
 
-	<developers>
-		<developer>
-			<name>Marc de Verdelhan</name>
-		</developer>
-		<developer>
-			<name>Simon-Justus Wimmer</name>
-		</developer>
-	</developers>
+      <!-- License headers -->
+      <plugin>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <header>LICENSE</header>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </configuration>
+        <groupId>com.mycila</groupId>
+        <version>3.0</version>
+      </plugin>
 
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<comments>All source code is under the MIT license.</comments>
-		</license>
-	</licenses>
+      <!-- Source formatter -->
+      <plugin>
+        <artifactId>formatter-maven-plugin</artifactId>
+        <configuration>
+          <configFile>${project.basedir}/code-formatter.xml</configFile>
+        </configuration>
+        <groupId>net.revelc.code.formatter</groupId>
+        <version>2.10.0</version>
+      </plugin>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>http://github.com/ta4j/ta4j/issues</url>
-	</issueManagement>
+      <!-- Releases -->
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagNameFormat>@{project.version}</tagNameFormat>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <artifactId>maven-invoker</artifactId>
+            <groupId>org.apache.maven.shared</groupId>
+            <version>2.2</version>
+          </dependency>
+        </dependencies>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>2.5.1</version>
+      </plugin>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus snapshot repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Sonatype Nexus release repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+    </plugins>
+  </build>
+  <ciManagement>
+    <url>http://travis-ci.org/ta4j/ta4j</url>
+  </ciManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <artifactId>logback-classic</artifactId>
+        <groupId>ch.qos.logback</groupId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <description>ta4j is a Java library providing a simple API for technical analysis.</description>
 
-	<ciManagement>
-		<url>http://travis-ci.org/ta4j/ta4j</url>
-	</ciManagement>
+  <developers>
+    <developer>
+      <name>Marc de Verdelhan</name>
+    </developer>
+    <developer>
+      <name>Simon-Justus Wimmer</name>
+    </developer>
+  </developers>
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Sonatype Nexus release repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus snapshot repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+  <groupId>org.ta4j</groupId>
+  <inceptionYear>2014</inceptionYear>
 
-	<scm>
-		<connection>scm:git:git://github.com/ta4j/ta4j.git</connection>
-		<developerConnection>scm:git:git@github.com:ta4j/ta4j.git</developerConnection>
-		<url>http://github.com/ta4j/ta4j</url>
-		<tag>0.14</tag>
-	</scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>http://github.com/ta4j/ta4j/issues</url>
+  </issueManagement>
 
-	<modules>
-		<module>ta4j-core</module>
-		<module>ta4j-examples</module>
-	</modules>
+  <licenses>
+    <license>
+      <comments>All source code is under the MIT license.</comments>
+      <name>MIT License</name>
+    </license>
+  </licenses>
 
-	<properties>
-		<!-- Encoding -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	</properties>
+  <modelVersion>4.0.0</modelVersion>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>1.2.3</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <modules>
+    <module>ta4j-core</module>
+    <module>ta4j-examples</module>
+  </modules>
 
-	<profiles>
+  <name>Ta4j Parent</name>
 
-		<!-- Only when performing a release (i.e. not for snapshots) -->
-		<profile>
-			<id>sonatype-oss-release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.13</version>
-						<extensions>true</extensions>
-						<configuration>
-							<!-- The Base URL of Nexus instance where we want to stage -->
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<!-- The server "id" element from settings to use authentication from -->
-							<serverId>sonatype-nexus-staging</serverId>
-						</configuration>
-					</plugin>
+  <packaging>pom</packaging>
 
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.2.0</version>
-						<configuration>
-							<doclint>none</doclint>
-						</configuration>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+  <profiles>
 
-					<!-- Artifact signing -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+    <!-- Only when performing a release (i.e. not for snapshots) -->
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <!-- The Base URL of Nexus instance where we want to stage -->
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <!-- The server "id" element from settings to use authentication from -->
+              <serverId>sonatype-nexus-staging</serverId>
+            </configuration>
+            <extensions>true</extensions>
+            <groupId>org.sonatype.plugins</groupId>
+            <version>1.6.13</version>
+          </plugin>
 
-	</profiles>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <doclint>none</doclint>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <id>attach-javadocs</id>
+              </execution>
+            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <version>3.2.0</version>
+          </plugin>
 
-	<build>
-		<plugins>
+          <!-- Artifact signing -->
+          <plugin>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <version>1.5</version>
+          </plugin>
+        </plugins>
+      </build>
+      <id>sonatype-oss-release</id>
+    </profile>
 
-			<!-- Build source and target -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
-				</configuration>
-			</plugin>
-			<!-- Package sources -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+  </profiles>
 
-			<!-- License headers -->
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<header>LICENSE</header>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
-				</configuration>
-			</plugin>
+  <properties>
+    <!-- Encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
 
-			<!-- Source formatter -->
-			<plugin>
-				<groupId>net.revelc.code.formatter</groupId>
-				<artifactId>formatter-maven-plugin</artifactId>
-				<version>2.10.0</version>
-					<configuration>
-						<configFile>${project.basedir}/code-formatter.xml</configFile>
-					</configuration>
-			</plugin>
+  <scm>
+    <connection>scm:git:git://github.com/ta4j/ta4j.git</connection>
+    <developerConnection>scm:git:git@github.com:ta4j/ta4j.git</developerConnection>
+    <tag>0.14</tag>
+    <url>http://github.com/ta4j/ta4j</url>
+  </scm>
 
-			<!-- Releases -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<tagNameFormat>@{project.version}</tagNameFormat>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.shared</groupId>
-						<artifactId>maven-invoker</artifactId>
-						<version>2.2</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+  <url>http://github.com/ta4j/ta4j</url>
 
-		</plugins>
-	</build>
+  <version>0.16-SNAPSHOT</version>
 
 </project>

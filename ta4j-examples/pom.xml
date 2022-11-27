@@ -1,54 +1,54 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.ta4j</groupId>
-        <artifactId>ta4j-parent</artifactId>
-        <version>0.16-SNAPSHOT</version>
-    </parent>
-    <artifactId>ta4j-examples</artifactId>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>ta4j-examples</artifactId>
+  <dependencies>
 
-    <name>Ta4j Examples</name>
-    <description>Provides examples that demonstrate how to use ta4j</description>
+    <!-- Test dependencies -->
+    <dependency>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
+      <scope>test</scope>
+      <version>4.13.1</version>
+    </dependency>
 
-    <dependencies>
+    <dependency>
+      <artifactId>ta4j-core</artifactId>
+      <groupId>org.ta4j</groupId>
+      <version>0.16-SNAPSHOT</version>
+    </dependency>
 
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <artifactId>opencsv</artifactId>
+      <groupId>com.opencsv</groupId>
+      <version>3.9</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.ta4j</groupId>
-            <artifactId>ta4j-core</artifactId>
-            <version>0.16-SNAPSHOT</version>
-        </dependency>
+    <dependency>
+      <artifactId>jfreechart</artifactId>
+      <groupId>org.jfree</groupId>
+      <version>1.0.17</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>3.9</version>
-        </dependency>
+    <dependency>
+      <artifactId>logback-classic</artifactId>
+      <groupId>ch.qos.logback</groupId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.17</version>
-        </dependency>
+    <dependency>
+      <artifactId>gson</artifactId>
+      <groupId>com.google.code.gson</groupId>
+      <version>2.8.6</version>
+    </dependency>
+  </dependencies>
+  <description>Provides examples that demonstrate how to use ta4j</description>
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
+  <modelVersion>4.0.0</modelVersion>
+  <name>Ta4j Examples</name>
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.6</version>
-        </dependency>
-    </dependencies>
+  <parent>
+    <artifactId>ta4j-parent</artifactId>
+    <groupId>org.ta4j</groupId>
+    <version>0.16-SNAPSHOT</version>
+  </parent>
 
 </project>
 
