@@ -33,7 +33,6 @@ import java.math.RoundingMode;
 import java.util.Properties;
 import java.util.function.Function;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.ta4j.core.indicators.AbstractIndicatorTest;
@@ -262,10 +261,10 @@ public class NumTest extends AbstractIndicatorTest<Object, Num> {
     Assert.assertEquals(five, five.function().apply((float) 5));
     Assert.assertEquals(five, five.function().apply((short) 5));
 
-    TestCase.assertNotEquals(five, five.function().apply(4.9));
-    TestCase.assertNotEquals(five, five.function().apply(6));
-    TestCase.assertNotEquals(five, five.function().apply((float) 15));
-    TestCase.assertNotEquals(five, five.function().apply((short) 45));
+    Assert.assertNotEquals(five, five.function().apply(4.9));
+    Assert.assertNotEquals(five, five.function().apply(6));
+    Assert.assertNotEquals(five, five.function().apply((float) 15));
+    Assert.assertNotEquals(five, five.function().apply((short) 45));
   }
 
   @Test
