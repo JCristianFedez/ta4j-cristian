@@ -19,8 +19,16 @@ public class StandardDeviationFilter {
 
   private final CollectionCachedIndicator collectionCachedIndicator;
 
-  public StandardDeviationFilter(final Indicator<Num> indicator, final int barCount, final int filter) {
+  private StandardDeviationFilter(final Indicator<Num> indicator, final int barCount, final int filter) {
     this.collectionCachedIndicator = new CollectionCachedIndicator(indicator, barCount, filter);
+  }
+
+  public static StandardDeviationFilter of(final Indicator<Num> indicator, final int barCount, final int filter) {
+    return new StandardDeviationFilter(indicator, barCount, filter);
+  }
+
+  public static StandardDeviationFilter of(final Indicator<Num> indicator, final int barCount) {
+    return new StandardDeviationFilter(indicator, barCount, 1);
   }
 
   public List<Num> getValue() {

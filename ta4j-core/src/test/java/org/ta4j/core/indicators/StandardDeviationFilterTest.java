@@ -22,7 +22,7 @@ public class StandardDeviationFilterTest extends AbstractIndicatorTest<Indicator
   public void filter_candles_by_standard_deviation() {
     final MockBarSeries data = new MockBarSeries(this.numFunction, values());
 
-    final StandardDeviationFilter sdv = new StandardDeviationFilter(new ClosePriceIndicator(data), 10, 1);
+    final StandardDeviationFilter sdv = StandardDeviationFilter.of(new ClosePriceIndicator(data), 10);
 
     final List<Double> expCloseValues =
         Arrays.asList(20710.18, 20746.92, 20746.92, 20746.92, 20746.92, 20746.92, 20746.92, 20786.28, 20862.3, 20786.98, 20786.98, 20849.19,
@@ -36,7 +36,7 @@ public class StandardDeviationFilterTest extends AbstractIndicatorTest<Indicator
   public void return_same_candles_values_when_filter_is_zero() {
     final MockBarSeries data = new MockBarSeries(this.numFunction, values());
 
-    final StandardDeviationFilter sdv = new StandardDeviationFilter(new ClosePriceIndicator(data), 10, 0);
+    final StandardDeviationFilter sdv = StandardDeviationFilter.of(new ClosePriceIndicator(data), 10, 0);
 
     final List<Double> expCloseValues =
         Arrays.asList(20710.18, 20746.92, 20746.06, 20725.53, 20743.32, 20751.96, 20740.68, 20786.28, 20862.3, 20786.98, 20818.12, 20849.19,
