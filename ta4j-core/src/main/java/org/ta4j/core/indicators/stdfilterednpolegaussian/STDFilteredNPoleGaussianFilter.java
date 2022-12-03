@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.cristian.chart.analyzer.enums.OperationType;
-import com.cristian.chart.analyzer.exceptions.AppException;
 import com.cristian.chart.analyzer.manager.CandleManager;
 import com.cristian.chart.analyzer.models.CurrencyPair;
 import com.cristian.chart.analyzer.models.Operation;
@@ -75,7 +74,7 @@ public class STDFilteredNPoleGaussianFilter extends RecursiveCachedIndicator<Num
     return new STDFilteredNPoleGaussianFilter(indicator, currencyPair);
   }
 
-  public List<Operation> execute() throws AppException {
+  public List<Operation> execute() {
     final List<Operation> operations = new ArrayList<>();
     final int rangeToFilter = 60;
     for (int i = getBarSeries().getBarCount(); i >= rangeToFilter; i--) {
@@ -83,34 +82,42 @@ public class STDFilteredNPoleGaussianFilter extends RecursiveCachedIndicator<Num
       final BarSeries subSeries = getBarSeries().getSubSeries(fromIndex, i);
       operations.add(innerExecute(subSeries));
     }
+    Collections.reverse(operations);
     return operations;
   }
 
-  private Operation innerExecute(final BarSeries src) throws AppException {
+  private Operation innerExecute(final BarSeries src) {
     Collections.reverse(src.getBarData());
-    final BarSeries srcFiltered = FILTER > 0 ? buildBarSerie(StandardDeviationFilter.of(src, FILTER_PERIOD, FILTER).stream()) : src;
-    // Hasta aqui igual que el antiguo
-    final BarSeries srcFiltered2 = srcFiltered.getSubSeries(0, 51);
-    final BarSeries outWithGaussian = buildBarSerie(GaussianFilter.of(new ClosePriceIndicator(srcFiltered2)).stream());
-    Collections.reverse(outWithGaussian.getBarData());
-    // Hasta aqui igual mas o menos
-
-    final BarSeries outWithGaussian2 = outWithGaussian.getSubSeries(0, 40);
-    Collections.reverse(outWithGaussian2.getBarData());
-    final BarSeries outFiltered = FILTER > 0
-        ? buildBarSerie(StandardDeviationFilter.of(outWithGaussian2, FILTER_PERIOD, FILTER).stream())
-        : outWithGaussian2;
-    final BarSeries outFiltered2 = outFiltered.getSubSeries(0, 31);
-    Collections.reverse(outFiltered2.getBarData());
-
-    final BarSeries sig = outFiltered2.getSubSeries(1, outFiltered2.getEndIndex() + 1);
-    // Hasta aqui igual mas o menos
-
-    calculateOperation(outFiltered2, sig);
-
+    final BarSeries srcFiltered = srcFilteredByStandarDeviation(src);
+    final BarSeries outWithGaussian = gaussianFilter(srcFiltered);
+    final BarSeries outFiltered = filterGaussianResultByStandarDeviation(outWithGaussian);
+    final BarSeries sig = outFiltered.getSubSeries(1, outFiltered.getEndIndex() + 1);
+    calculateOperation(outFiltered, sig);
     return Operation.of(this.currencyPair)
         .type(operationType())
         .time(Timestamp.valueOf(src.getLastBar().getEndTime().withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()).getTime());
+  }
+
+  private BarSeries filterGaussianResultByStandarDeviation(final BarSeries outWithGaussian) {
+    final BarSeries outFiltered = FILTER > 0
+        ? buildBarSerie(StandardDeviationFilter.of(outWithGaussian, FILTER_PERIOD, FILTER).stream())
+        : outWithGaussian;
+    final BarSeries outFiltered2 = outFiltered.getSubSeries(0, outFiltered.getBarCount() - 9);
+    Collections.reverse(outFiltered2.getBarData());
+    return outFiltered2;
+  }
+
+  private BarSeries gaussianFilter(final BarSeries srcFiltered) {
+    final BarSeries outWithGaussian = buildBarSerie(GaussianFilter.of(new ClosePriceIndicator(srcFiltered)).stream());
+    Collections.reverse(outWithGaussian.getBarData());
+    final BarSeries outWithGaussian2 = outWithGaussian.getSubSeries(0, outWithGaussian.getBarCount() - 11);
+    Collections.reverse(outWithGaussian2.getBarData());
+    return outWithGaussian2;
+  }
+
+  private BarSeries srcFilteredByStandarDeviation(final BarSeries src) {
+    final BarSeries srcFiltered = FILTER > 0 ? buildBarSerie(StandardDeviationFilter.of(src, FILTER_PERIOD, FILTER).stream()) : src;
+    return srcFiltered.getSubSeries(0, srcFiltered.getBarCount() - 9);
   }
 
   private BarSeries buildBarSerie(final Stream<Num> values) {
