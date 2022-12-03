@@ -1,5 +1,6 @@
 package org.ta4j.core.indicators.stdfilterednpolegaussian;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -25,6 +26,8 @@ import org.ta4j.core.indicators.StandardDeviationFilter;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
+// TODO: 2/12/22 Hacer que funcione bien sin reverts, para ello el unitario cargara datos de binance y vere que las ordenes son iguales
+// que las de tradingview
 public class STDFilteredNPoleGaussianFilter extends RecursiveCachedIndicator<Num> {
 
   private static final CandleManager CANDELS_MANAGER = new CandleManager();
@@ -75,7 +78,7 @@ public class STDFilteredNPoleGaussianFilter extends RecursiveCachedIndicator<Num
   public List<Operation> execute() throws AppException {
     final List<Operation> operations = new ArrayList<>();
     final int rangeToFilter = 60;
-    for (int i = getBarSeries().getBarCount(); i > rangeToFilter; i--) {
+    for (int i = getBarSeries().getBarCount(); i >= rangeToFilter; i--) {
       final int fromIndex = i - rangeToFilter;
       final BarSeries subSeries = getBarSeries().getSubSeries(fromIndex, i);
       operations.add(innerExecute(subSeries));
@@ -107,7 +110,7 @@ public class STDFilteredNPoleGaussianFilter extends RecursiveCachedIndicator<Num
 
     return Operation.of(this.currencyPair)
         .type(operationType())
-        .time(src.getLastBar().getEndTime().toInstant().getEpochSecond());
+        .time(Timestamp.valueOf(src.getLastBar().getEndTime().withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()).getTime());
   }
 
   private BarSeries buildBarSerie(final Stream<Num> values) {
